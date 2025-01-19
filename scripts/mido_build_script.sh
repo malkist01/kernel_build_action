@@ -51,6 +51,16 @@ fi
 LC_ALL=C
 export LC_ALL
 
+export ANDROID_NDK=/path/to/ndk
+export ANDROID=1
+cd user
+mkdir -p build/android && cd build/android
+cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DANDROID_PLATFORM=android-33 \
+    -DANDROID_ABI=arm64-v8a ../..
+cmake --build .
+
 # Send Build Info
 sendinfo() {
     tg "
