@@ -87,7 +87,6 @@ compile() {
         CROSS_COMPILE_ARM32=arm-linux-gnueabi
 
     if ! [ -a "$IMAGE" ]; then
-        finderr
         exit 1
     fi
 
