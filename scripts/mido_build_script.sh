@@ -35,7 +35,7 @@ DEVICE="Redmi Note 4"
 export DEVICE
 CODENAME="mido"
 export CODENAME
-DEFCONFIG="mido-ksu_defconfig"
+DEFCONFIG="mido_defconfig"
 export DEFCONFIG
 COMMIT_HASH=$(git rev-parse --short HEAD)
 export COMMIT_HASH
