@@ -26,13 +26,13 @@ export CACHE
 export KBUILD_COMPILER_STRING
 ARCH=arm64
 export ARCH
-KBUILD_BUILD_HOST="IM"
+KBUILD_BUILD_HOST="ANDROID"
 export KBUILD_BUILD_HOST
-KBUILD_BUILD_USER="IM1994"
+KBUILD_BUILD_USER="MALKIST"
 export KBUILD_BUILD_USER
-DEVICE="ASUS MAX PRO M2"
+DEVICE="REDMI NOTE 4"
 export DEVICE
-CODENAME="X01BD"
+CODENAME="mido"
 export CODENAME
 # DEFCONFIG=""
 export DEFCONFIG
@@ -101,7 +101,7 @@ compile() {
         rm -rf out && mkdir -p out
     fi
 
-    make O=out ARCH="${ARCH}" asus/X01BD_defconfig
+    make O=out ARCH="${ARCH}" mido_defconfig
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
         CC="clang" \
