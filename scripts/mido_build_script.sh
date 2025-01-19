@@ -35,7 +35,7 @@ DEVICE="Redmi Note 4"
 export DEVICE
 CODENAME="mido"
 export CODENAME
-DEFCONFIG="mido_defconfig"
+DEFCONFIG="mido-ksu_defconfig"
 export DEFCONFIG
 COMMIT_HASH=$(git rev-parse --short HEAD)
 export COMMIT_HASH
@@ -62,13 +62,6 @@ sendinfo() {
 *Last Commit*: [${COMMIT_HASH}](${REPO}/commit/${COMMIT_HASH})
 *Compiler*: \`${KBUILD_COMPILER_STRING}\`
 *Build Status*: \`${STATUS}\`"
-}
-
-# Push kernel to channel
-push() {
-    cd AnyKernel || exit 1
-    ZIP=$(echo *.zip)
-    tgs "${ZIP}" "Build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s). | For *${DEVICE} (${CODENAME})* | ${KBUILD_COMPILER_STRING}"
 }
 
 # Compile
