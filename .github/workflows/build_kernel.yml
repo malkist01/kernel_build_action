@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       device:
-          description: 'device codename (e.g mido)'
+          description: 'device codename (e.g x01bd,X01BD)'
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
@@ -12,6 +12,7 @@ on:
       branch:
           description: 'Kernel source branch'
           required: true
+
 
 
 env:
@@ -30,8 +31,8 @@ jobs:
     steps:
       - name: Initializing environment
         run: |
-          git config --global user.name "malkist01"
-          git config --global user.email "aripujiyanto0812@gmail.com"
+          git config --global user.name "IM"
+          git config --global user.email "IM1994@gmail.com"
           df -h
           ld --version
           gcc -v
@@ -84,3 +85,5 @@ jobs:
         name: "${{ inputs.name }}"
         path: Upload/*
 # Enjoy Your Life....
+
+
