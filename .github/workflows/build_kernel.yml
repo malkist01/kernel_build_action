@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       device:
-          description: 'device codename (e.g x01bd,X01BD)'
+          description: 'device codename (e.g mido)'
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
@@ -31,7 +31,7 @@ env:
 
 jobs:
   kernel-build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.10
 
     steps:
       - name: Initializing environment
