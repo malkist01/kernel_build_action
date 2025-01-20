@@ -9,8 +9,8 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-                git clone -q https://gitlab.com/GhostMaster69-dev/android-clang.git --depth=1 -b 19.0.1
-        KBUILD_COMPILER_STRING="Android clang 19.0.1"
+                git clone -q https://gitlab.com/TheXPerienceProject/yuki_clang.git --depth=1 -b 18.0.0
+        KBUILD_COMPILER_STRING="Yuki clang 18.0.0"
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
