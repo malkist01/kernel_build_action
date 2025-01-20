@@ -57,9 +57,9 @@ jobs:
           elif [ "${DEVICE}" = "j6primelte" ]; then 
             wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/j6primelte_build_script.sh
             bash j6primelte_build_script.sh
-          elif [ "${DEVICE}" = "sweet" ]; then
+          elif [ "${DEVICE}" = "oxygen" ]; then
             wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/sweet_build_script.sh
-            bash sweet_build_script.sh
+            bash oxygen_build_script.sh
           else
             echo "Device not supported yet"
           fi
