@@ -56,7 +56,7 @@ jobs:
             bash santoni_build_script.sh
           elif [ "${DEVICE}" = "j6primelte" ]; then 
             wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/j6primelte_build_script.sh
-            bash topaz_build_script.sh
+            bash j6primelte_build_script.sh
           elif [ "${DEVICE}" = "sweet" ]; then
             wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/sweet_build_script.sh
             bash sweet_build_script.sh
