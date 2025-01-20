@@ -10,7 +10,6 @@ clang() {
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
         git clone https://gitlab.com/LeCmnGend/proton-clang -b clang-15 --depth=1 clang
-        KBUILD_COMPILER_STRING="Teletubies clang 15.0"
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
@@ -27,9 +26,9 @@ export CACHE
 export KBUILD_COMPILER_STRING
 ARCH=arm64
 export ARCH
-KBUILD_BUILD_HOST="malkist"
+KBUILD_BUILD_HOST="android-server"
 export KBUILD_BUILD_HOST
-KBUILD_BUILD_USER="android-server"
+KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
 DEVICE="Redmi Note 4"
 export DEVICE
@@ -109,6 +108,7 @@ compile() {
         LLVM_IAS=1 \
         AR=llvm-ar \
         NM=llvm-nm \
+        LD=ld.lld \
         OBJCOPY=llvm-objcopy \
         OBJDUMP=llvm-objdump \
         STRIP=llvm-strip \
