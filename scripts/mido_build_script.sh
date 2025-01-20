@@ -109,7 +109,6 @@ compile() {
         LLVM_IAS=1 \
         AR=llvm-ar \
         NM=llvm-nm \
-        LD=ld.lld \
         OBJCOPY=llvm-objcopy \
         OBJDUMP=llvm-objdump \
         STRIP=llvm-strip \
