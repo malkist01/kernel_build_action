@@ -7,11 +7,11 @@ cd kernel
 
 clang() {
     rm -rf clang
-    echo "Cloning clang"
-    if [ ! -d "clang" ]; then
-        git clone -q https://github.com/ZyCromerZ/Clang.git --depth=1 -b 20 clang
-        KBUILD_COMPILER_STRING="ZyCromerZ clang 20.0"
-        PATH="${PWD}/clang/bin:${PATH}"
+    echo "Cloning gcc"
+    if [ ! -d "gcc" ]; then
+        git clone -q https://github.com/xiangfeidexiaohuo/GCC-4.9.git --depth=1 -b gcc4.9
+        KBUILD_COMPILER_STRING="GCC 4.9"
+        PATH="${PWD}/gçc/bin:${PATH}"
     fi
     sudo apt install -y ccache
     echo "Done"
@@ -27,9 +27,9 @@ export CACHE
 export KBUILD_COMPILER_STRING
 ARCH=arm64
 export ARCH
-KBUILD_BUILD_HOST="malkist"
+KBUILD_BUILD_HOST="android-server"
 export KBUILD_BUILD_HOST
-KBUILD_BUILD_USER="android-server"
+KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
 DEVICE="Samsung J6+"
 export DEVICE
@@ -48,8 +48,6 @@ if [ $CACHE = 1 ]; then
     ccache -M 100G
     export USE_CCACHE=1
 fi
-LC_ALL=C
-export LC_ALL
 
 # Send Build Info
 sendinfo() {
@@ -74,15 +72,6 @@ compile() {
     make O=out ARCH="${ARCH}" "${DEFCONFIG}"
     make -j"${PROCS}" O=out \
         ARCH=arm64 \
-        LLVM=1 \
-        LLVM_IAS=1 \
-        AR=llvm-ar \
-        NM=llvm-nm \
-        LD=ld.lld \
-        OBJCOPY=llvm-objcopy \
-        OBJDUMP=llvm-objdump \
-        STRIP=llvm-strip \
-        CC=clang \
         CROSS_COMPILE=aarch64-linux-gnu- \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi
 
