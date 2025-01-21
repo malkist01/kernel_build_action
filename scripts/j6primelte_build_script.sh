@@ -6,7 +6,7 @@ git clone $REPO -b $BRANCH kernel
 cd kernel
 
 clang() {
-    rm -rf clang
+    rm -rf gcc
     echo "Cloning gcc"
     if [ ! -d "gcc" ]; then
         git clone -q https://github.com/xiangfeidexiaohuo/GCC-4.9.git --depth=1 -b gcc4.9
@@ -72,8 +72,9 @@ compile() {
     make O=out ARCH="${ARCH}" "${DEFCONFIG}"
     make -j"${PROCS}" O=out \
         ARCH=arm64 \
-        CROSS_COMPILE=aarch64-linux-gnu- \
-        CROSS_COMPILE_ARM32=arm-linux-gnueabi
+                          CROSS_COMPILE=aarch64-linux-gnu- \
+                          CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+                          CROSS_COMPILE_COMPAT=arm-linux-gnueabi-
 
     if ! [ -a "$IMAGE" ]; then
         exit 1
