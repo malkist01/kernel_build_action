@@ -9,7 +9,7 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://gitlab.com/LeCmnGend/proton-clang -b clang-15 --depth=1 clang
+        git clone https://github.com/malkist01/RvClang -b main --depth=1 clang
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
