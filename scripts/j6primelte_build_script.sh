@@ -33,7 +33,6 @@ rm -f ~/gcc-4.9.4.tar.gz
 # add to path (you may want to add these lines to $HOME/.bash_profile)
 export PATH=$HOME/gcc-4.9.4/bin:$PATH
 export LD_LIBRARY_PATH=$HOME/gcc-4.9.4/lib:$HOME/gcc-4.9.4/lib64:$LD_LIBRARY_PATH
-}
 
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 IMAGE2=$(pwd)/out/arch/arm64/boot/dtbo.img
