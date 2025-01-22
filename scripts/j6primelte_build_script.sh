@@ -5,16 +5,34 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
 
-clang() {
-    rm -rf gcc
-    echo "Cloning gcc"
-    if [ ! -d "gcc" ]; then
-        git clone -q https://github.com/xiangfeidexiaohuo/GCC-4.9.git --depth=1 -b gcc4.9
-        KBUILD_COMPILER_STRING="GCC 4.9"
-        PATH="${PWD}/gçc/bin:${PATH}"
-    fi
-    sudo apt install -y ccache
-    echo "Done"
+#!/bin/bash
+
+# this script installs GCC 4.9.4 
+# to use it navigate to your home directory and type:
+# sh install-gcc-4.9.4.sh
+
+# download and install gcc 4.9.4
+wget https://ftp.gnu.org/gnu/gcc/gcc-4.9.4/gcc-4.9.4.tar.gz
+tar xzf gcc-4.9.4.tar.gz
+cd gcc-4.9.4
+./contrib/download_prerequisites
+cd ..
+mkdir objdir
+
+cd objdir
+../gcc-4.9.4/configure --prefix=$HOME/gcc-4.9.4 --enable-languages=c,c++,fortran,go --disable-multilib
+make
+
+# install
+make install
+
+# clean up
+rm -rf ~/objdir
+rm -f ~/gcc-4.9.4.tar.gz
+
+# add to path (you may want to add these lines to $HOME/.bash_profile)
+export PATH=$HOME/gcc-4.9.4/bin:$PATH
+export LD_LIBRARY_PATH=$HOME/gcc-4.9.4/lib:$HOME/gcc-4.9.4/lib64:$LD_LIBRARY_PATH
 }
 
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
@@ -72,9 +90,8 @@ compile() {
     make O=out ARCH="${ARCH}" "${DEFCONFIG}"
     make -j"${PROCS}" O=out \
         ARCH=arm64 \
-                          CROSS_COMPILE=aarch64-linux-gnu- \
-                          CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                          CROSS_COMPILE_COMPAT=arm-linux-gnueabi-
+        CROSS_COMPILE=aarch64-linux-gnu- \
+        CROSS_COMPILE_ARM32=arm-linux-gnueabi
 
     if ! [ -a "$IMAGE" ]; then
         exit 1
