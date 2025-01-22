@@ -20,7 +20,7 @@ jobs:
          sudo apt-get install --no-install-recommends -y gcc-arm-linux-gnueabi gcc-aarch64-linux-gnu
          git clone --depth=1 https://github.com/malkist01/android_device_xiaomi_mido.git -b lineage-22.1
          mkdir out -p -v
-         cd kernel-dir
+         cd lineage-22.1
          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.7.6
          export KBUILD_BUILD_USER="malkist"
          export KBUILD_BUILD_HOST="android-server"
