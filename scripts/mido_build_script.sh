@@ -9,7 +9,7 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://gitlab.com/LeCmnGend/clang.git -b neutron --depth=1 clang
+        git clone https://gitlab.com/LeCmnGend/clang.git -b clang-19 --depth=1 clang
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
