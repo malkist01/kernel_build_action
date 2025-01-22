@@ -34,7 +34,7 @@ DEVICE="Redmi 4X"
 export DEVICE
 CODENAME="santoni"
 export CODENAME
-DEFCONFIG="santoni_defconfig"
+DEFCONFIG="xi_defconfig"
 export DEFCONFIG
 COMMIT_HASH=$(git rev-parse --short HEAD)
 export COMMIT_HASH
