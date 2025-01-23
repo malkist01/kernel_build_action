@@ -74,6 +74,7 @@ compile() {
     make -j"${PROCS}" O=out \
         ARCH=arm64 \
         LLVM=1 \
+        LD=ld.lld \
         LLVM_IAS=1 \
         AR=llvm-ar \
         NM=llvm-nm \
