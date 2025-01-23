@@ -9,7 +9,7 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone -q https://gitlab.com/LeCmnGend/clang.git -b clang-19 clang
+        git clone https://gitlab.com/LeCmnGend/clang.git -b clang-19 --depth=1 clang
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
@@ -28,7 +28,7 @@ ARCH=arm64
 export ARCH
 KBUILD_BUILD_HOST="android-server"
 export KBUILD_BUILD_HOST
-KBUILD_BUILD_USER="teletubies"
+KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
 DEVICE="Redmi 4X"
 export DEVICE
@@ -50,17 +50,48 @@ fi
 LC_ALL=C
 export LC_ALL
 
+tg() {
+    curl -sX POST https://api.telegram.org/bot"${token}"/sendMessage -d chat_id="${chat_id}" -d parse_mode=Markdown -d disable_web_page_preview=true -d text="$1" &>/dev/null
+}
+
+tgs() {
+    MD5=$(md5sum "$1" | cut -d' ' -f1)
+    curl -fsSL -X POST -F document=@"$1" https://api.telegram.org/bot"${token}"/sendDocument \
+        -F "chat_id=${chat_id}" \
+        -F "parse_mode=Markdown" \
+        -F "caption=$2 | *MD5*: \`$MD5\`"
+}
+
 # Send Build Info
 sendinfo() {
     tg "
-• sirCompiler Action •
+• IMcompiler Action •
 *Building on*: \`Github actions\`
 *Date*: \`${DATE}\`
 *Device*: \`${DEVICE} (${CODENAME})\`
 *Branch*: \`$(git rev-parse --abbrev-ref HEAD)\`
-*Last Commit*: [${COMMIT_HASH}](${REPO}/commit/${COMMIT_HASH})
 *Compiler*: \`${KBUILD_COMPILER_STRING}\`
+*Last Commit*: \`${COMMIT_HASH}\`
 *Build Status*: \`${STATUS}\`"
+}
+
+# Push kernel to channel
+push() {
+    cd AnyKernel || exit 1
+    ZIP=$(echo *.zip)
+    tgs "${ZIP}" "Build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s). | For *${DEVICE} (${CODENAME})* | ${KBUILD_COMPILER_STRING}"
+}
+
+# Catch Error
+finderr() {
+    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+        -d chat_id="$chat_id" \
+        -d "disable_web_page_preview=true" \
+        -d "parse_mode=markdown" \
+        -d sticker="CAACAgIAAxkBAAED3JViAplqY4fom_JEexpe31DcwVZ4ogAC1BAAAiHvsEs7bOVKQsl_OiME" \
+        -d text="Build throw an error(s)"
+    error_sticker
+    exit 1
 }
 
 # Compile
@@ -74,10 +105,10 @@ compile() {
     make -j"${PROCS}" O=out \
         ARCH=arm64 \
         LLVM=1 \
-        LD=ld.lld \
         LLVM_IAS=1 \
         AR=llvm-ar \
         NM=llvm-nm \
+        LD=ld.lld \
         OBJCOPY=llvm-objcopy \
         OBJDUMP=llvm-objdump \
         STRIP=llvm-strip \
