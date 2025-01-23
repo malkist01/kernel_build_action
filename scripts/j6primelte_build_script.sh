@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-sudo apt-get install gcc-4.9 g++-4.9
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
-
 # Dependencies
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
@@ -11,10 +8,12 @@ IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 IMAGE2=$(pwd)/out/arch/arm64/boot/dtbo.img
 DATE=$(date +"%Y%m%d-%H%M")
 START=$(date +"%s")
+export ARCH=arm64
+export SUBARCH=arm64
+CROSS_COMPILE=~/path/to/aarch64-linux-android-4.9-toolchain/bin/aarch64-linux-android-
 KERNEL_DIR=$(pwd)
 CACHE=1
 export CACHE
-export KBUILD_COMPILER_STRING
 ARCH=arm64
 export ARCH
 KBUILD_BUILD_HOST="android-server"
