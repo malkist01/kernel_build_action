@@ -101,21 +101,18 @@ compile() {
         rm -rf out && mkdir -p out
     fi
 
-make -j$(nproc --all) O=out LLVM=1 LLVM_IAS=0 \
-ARCH=arm64 \
-CC="ccache clang" \
-LD=ld.lld \
-AR=llvm-ar \
-AS=llvm-as \
-NM=llvm-nm \
-STRIP=llvm-strip \
-OBJCOPY=llvm-objcopy \
-OBJDUMP=llvm-objdump \
-READELF=llvm-readelf \
-HOSTCC=clang \
-HOSTCXX=clang++ \
-HOSTAR=llvm-ar \
-HOSTLD=ld.lld \
+    make O=out ARCH="${ARCH}" "${DEFCONFIG}"
+    make -j"${PROCS}" O=out \
+        ARCH=arm64 \
+        LLVM=1 \
+        LLVM_IAS=1 \
+        AR=llvm-ar \
+        NM=llvm-nm \
+        LD=ld.lld \
+        OBJCOPY=llvm-objcopy \
+        OBJDUMP=llvm-objdump \
+        STRIP=llvm-strip \
+        CC=clang \
         CROSS_COMPILE=aarch64-linux-gnu- \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi
 
