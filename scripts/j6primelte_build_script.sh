@@ -1,20 +1,11 @@
 #!/usr/bin/env bash
+sudo apt-get install gcc-4.9 g++-4.9
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 
 # Dependencies
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
-
-clang() {
-    rm -rf gcc
-    echo "Cloning gcc"
-    if [ ! -d "gcc" ]; then
-        git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b lineage-19.1 --depth=1 gcc
-        PATH="${PWD}/gcc/bin:${PATH}"
-    fi
-    sudo apt install -y ccache
-    echo "Done"
-}
 
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 IMAGE2=$(pwd)/out/arch/arm64/boot/dtbo.img
