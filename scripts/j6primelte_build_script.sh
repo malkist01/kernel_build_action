@@ -5,34 +5,16 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
 
-#!/bin/bash
-
-# this script installs GCC 4.9.4 
-# to use it navigate to your home directory and type:
-# sh install-gcc-4.9.4.sh
-
-# download and install gcc 4.9.4
-wget https://ftp.gnu.org/gnu/gcc/gcc-4.9.4/gcc-4.9.4.tar.gz
-tar xzf gcc-4.9.4.tar.gz
-cd gcc-4.9.4
-./contrib/download_prerequisites
-cd ..
-mkdir objdir
-
-cd objdir
-../gcc-4.9.4/configure --prefix=$HOME/gcc-4.9.4 --enable-languages=c,c++,fortran,go --disable-multilib
-make
-
-# install
-make install
-
-# clean up
-rm -rf ~/objdir
-rm -f ~/gcc-4.9.4.tar.gz
-
-# add to path (you may want to add these lines to $HOME/.bash_profile)
-export PATH=$HOME/gcc-4.9.4/bin:$PATH
-export LD_LIBRARY_PATH=$HOME/gcc-4.9.4/lib:$HOME/gcc-4.9.4/lib64:$LD_LIBRARY_PATH
+clang() {
+    rm -rf gcc
+    echo "Cloning gcc"
+    if [ ! -d "gcc" ]; then
+        git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b lineage-19.1 --depth=1 gcc
+        PATH="${PWD}/gcc/bin:${PATH}"
+    fi
+    sudo apt install -y ccache
+    echo "Done"
+}
 
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 IMAGE2=$(pwd)/out/arch/arm64/boot/dtbo.img
@@ -48,7 +30,7 @@ KBUILD_BUILD_HOST="android-server"
 export KBUILD_BUILD_HOST
 KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
-DEVICE="Samsung J6+"
+DEVICE="Samsung"
 export DEVICE
 CODENAME="j6primelte"
 export CODENAME
@@ -65,18 +47,51 @@ if [ $CACHE = 1 ]; then
     ccache -M 100G
     export USE_CCACHE=1
 fi
+LC_ALL=C
+export LC_ALL
+
+tg() {
+    curl -sX POST https://api.telegram.org/bot"${token}"/sendMessage -d chat_id="${chat_id}" -d parse_mode=Markdown -d disable_web_page_preview=true -d text="$1" &>/dev/null
+}
+
+tgs() {
+    MD5=$(md5sum "$1" | cut -d' ' -f1)
+    curl -fsSL -X POST -F document=@"$1" https://api.telegram.org/bot"${token}"/sendDocument \
+        -F "chat_id=${chat_id}" \
+        -F "parse_mode=Markdown" \
+        -F "caption=$2 | *MD5*: \`$MD5\`"
+}
 
 # Send Build Info
 sendinfo() {
     tg "
-• sirCompiler Action •
+• IMcompiler Action •
 *Building on*: \`Github actions\`
 *Date*: \`${DATE}\`
 *Device*: \`${DEVICE} (${CODENAME})\`
 *Branch*: \`$(git rev-parse --abbrev-ref HEAD)\`
-*Last Commit*: [${COMMIT_HASH}](${REPO}/commit/${COMMIT_HASH})
 *Compiler*: \`${KBUILD_COMPILER_STRING}\`
+*Last Commit*: \`${COMMIT_HASH}\`
 *Build Status*: \`${STATUS}\`"
+}
+
+# Push kernel to channel
+push() {
+    cd AnyKernel || exit 1
+    ZIP=$(echo *.zip)
+    tgs "${ZIP}" "Build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s). | For *${DEVICE} (${CODENAME})* | ${KBUILD_COMPILER_STRING}"
+}
+
+# Catch Error
+finderr() {
+    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+        -d chat_id="$chat_id" \
+        -d "disable_web_page_preview=true" \
+        -d "parse_mode=markdown" \
+        -d sticker="CAACAgIAAxkBAAED3JViAplqY4fom_JEexpe31DcwVZ4ogAC1BAAAiHvsEs7bOVKQsl_OiME" \
+        -d text="Build throw an error(s)"
+    error_sticker
+    exit 1
 }
 
 # Compile
@@ -96,7 +111,7 @@ compile() {
         exit 1
     fi
 
-    git clone --depth=1 -b master https://github.com/RooGhz720/Anykernel3.git AnyKernel
+    git clone --depth=1 -b midosan https://github.com/malkist01/AnyKernel3.git AnyKernel
     cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
     cp out/arch/arm64/boot/dtbo.img AnyKernel
     cp out/arch/arm64/boot/dtb.img AnyKernel
