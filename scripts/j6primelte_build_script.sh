@@ -3,7 +3,11 @@
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
-
+gcc() {
+    rm -rf gcc
+    echo "Cloning clang"
+    if [ ! -d "gcc" ]; then
+        git clone -q git clone https://github.com/Adrilaw/aarch64-linux-android-4.9-toolchain/ --depth=1 -b master gcc
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 IMAGE2=$(pwd)/out/arch/arm64/boot/dtbo.img
 DATE=$(date +"%Y%m%d-%H%M")
