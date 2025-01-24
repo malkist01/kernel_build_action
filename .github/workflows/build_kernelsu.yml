@@ -1,4 +1,4 @@
-name: Build KernelSu
+name: Build Kernel-ksu
 
 on:
   workflow_dispatch:
@@ -18,11 +18,6 @@ on:
       chat_id:
           description: 'Telegram chat id'
           required: true
-      kernelsu:
-        description: 'KernelSU | false if source not support'
-        default: 'curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.7.6'
-        required: true
-        type: string
 
 
 env:
@@ -41,8 +36,8 @@ jobs:
     steps:
       - name: Initializing environment
         run: |
-          git config --global user.name "IM"
-          git config --global user.email "IM1994@gmail.com"
+          git config --global user.name "malkist01"
+          git config --global user.email "aripujiyanto0812@gmail.com"
           df -h
           ld --version
           gcc -v
@@ -59,9 +54,9 @@ jobs:
           elif [ "${DEVICE}" = "santoni" ]; then
             wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/santoni_build_script.sh
             bash santoni_build_script.sh
-          elif [ "${DEVICE}" = "j6primelte" ]; then 
-            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/j6primelte_build_script.sh
-            bash j6primelte_build_script.sh
+          elif [ "${DEVICE}" = "mido" ]; then 
+            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/mido_ksu_build_script.sh
+            bash mido_ksu_build_script.sh
           elif [ "${DEVICE}" = "oxygen" ]; then
             wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/oxygen_build_script.sh
             bash oxygen_build_script.sh
