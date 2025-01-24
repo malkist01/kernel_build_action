@@ -32,7 +32,7 @@ KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
 DEVICE="Redmi Note 4"
 export DEVICE
-CODENAME="mido"
+CODENAME="mido-ksu"
 export CODENAME
 DEFCONFIG="teletubies_defconfig"
 export DEFCONFIG
