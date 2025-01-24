@@ -1,4 +1,4 @@
-name: Build Kernel
+name: Build KernelSu
 
 on:
   workflow_dispatch:
@@ -20,9 +20,8 @@ on:
           required: true
       kernelsu:
         description: 'KernelSU | false if source not support'
-        default: 'curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.7.6'
+        default: 'curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -'
         required: true
-        type: string
 
 
 env:
@@ -41,8 +40,8 @@ jobs:
     steps:
       - name: Initializing environment
         run: |
-          git config --global user.name "IM"
-          git config --global user.email "IM1994@gmail.com"
+          git config --global user.name "malkist01"
+          git config --global user.email "aripujiyanto0812@gmail.com"
           df -h
           ld --version
           gcc -v
