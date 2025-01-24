@@ -54,7 +54,7 @@ jobs:
           elif [ "${DEVICE}" = "santoni" ]; then
             wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/santoni_build_script.sh
             bash santoni_build_script.sh
-          elif [ "${DEVICE}" = "mido" ]; then 
+          elif [ "${DEVICE}" = "mido-ksu" ]; then 
             wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/mido_ksu_build_script.sh
             bash mido_ksu_build_script.sh
           elif [ "${DEVICE}" = "oxygen" ]; then
