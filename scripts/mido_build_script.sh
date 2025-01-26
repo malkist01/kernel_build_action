@@ -108,7 +108,6 @@ compile() {
         LLVM_IAS=1 \
         AR=llvm-ar \
         NM=llvm-nm \
-        LD=ld.lld \
         OBJCOPY=llvm-objcopy \
         OBJDUMP=llvm-objdump \
         STRIP=llvm-strip \
@@ -116,7 +115,6 @@ compile() {
         HOSTCC=clang \
         HOSTCXX=clang++ \
         HOSTAR=llvm-ar \
-        HOSTLD=ld.lld \
         CC="ccache clang" \
         CROSS_COMPILE=aarch64-linux-gnu- \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi
