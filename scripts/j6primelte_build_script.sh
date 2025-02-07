@@ -1,40 +1,46 @@
 #!/usr/bin/env bash
+
 # Dependencies
 rm -rf kernel
-git clone $REPO -b $BRANCH kernel 
+git clone $REPO -b $BRANCH kernel
 cd kernel
-gcc() {
-    rm -rf gcc
+
+clang() {
+    rm -rf clang
     echo "Cloning clang"
-    if [ ! -d "gcc" ]; then
-        git clone -q git clone https://github.com/Adrilaw/aarch64-linux-android-4.9-toolchain/ --depth=1 -b master gcc
+    if [ ! -d "clang" ]; then
+        git clone https://github.com/khusika/canting_prebuilts_clang.git -b main --depth=1 clang
+        
+        PATH="${PWD}/clang/bin:${PATH}"
+    fi
+    sudo apt install -y ccache
+    echo "Done"
+}
+
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-IMAGE2=$(pwd)/out/arch/arm64/boot/dtbo.img
 DATE=$(date +"%Y%m%d-%H%M")
 START=$(date +"%s")
-export ARCH=arm64
-export SUBARCH=arm64
-CROSS_COMPILE=~/path/to/aarch64-linux-android-4.9-toolchain/bin/aarch64-linux-android-
 KERNEL_DIR=$(pwd)
 CACHE=1
 export CACHE
+export KBUILD_COMPILER_STRING
 ARCH=arm64
 export ARCH
 KBUILD_BUILD_HOST="android-server"
 export KBUILD_BUILD_HOST
 KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
-DEVICE="Samsung"
+DEVICE="Samsung Galaxy J6+"
 export DEVICE
 CODENAME="j6primelte"
 export CODENAME
-DEFCONFIG="j6primelte_defconfig"
+# DEFCONFIG=""
 export DEFCONFIG
-COMMIT_HASH=$(git rev-parse --short HEAD)
+COMMIT_HASH=$(git log --oneline --pretty=tformat:"%h  %s  [%an]" --abbrev-commit --abbrev=1 -1)
 export COMMIT_HASH
 PROCS=$(nproc --all)
 export PROCS
-STATUS=TEST
+STATUS=STABLE
 export STATUS
 source "${HOME}"/.bashrc && source "${HOME}"/.profile
 if [ $CACHE = 1 ]; then
@@ -95,25 +101,25 @@ compile() {
         rm -rf out && mkdir -p out
     fi
 
-    make O=out ARCH="${ARCH}" "${DEFCONFIG}"
+    make O=out ARCH="${ARCH}" j6primelte_defconfig
     make -j"${PROCS}" O=out \
-        ARCH=arm64 \
+        ARCH=$ARCH \
+        CC="clang" \
         CROSS_COMPILE=aarch64-linux-gnu- \
-        CROSS_COMPILE_ARM32=arm-linux-gnueabi
+        CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
     if ! [ -a "$IMAGE" ]; then
+        finderr
         exit 1
     fi
 
-    git clone --depth=1 -b midosan https://github.com/malkist01/AnyKernel3.git AnyKernel
+    git clone --depth=1 https://github.com/malkist01/anykernel.git AnyKernel -b master
     cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
-    cp out/arch/arm64/boot/dtbo.img AnyKernel
-    cp out/arch/arm64/boot/dtb.img AnyKernel
 }
 # Zipping
 zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Test-Build-Kernel-"${BRANCH}"-"${CODENAME}"-"${DATE}".zip ./*
+    zip -r9 Kiwkiw-"${BRANCH}"-"${CODENAME}"-"${DATE}".zip ./*
     cd ..
 }
 
