@@ -9,8 +9,8 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone -q https://github.com/ZyCromerZ/Clang.git --depth=1 -b 20 clang
-        KBUILD_COMPILER_STRING="ZyCromerZ clang 20.0"
+		git clone --depth=1 https://gitlab.com/LeCmnGend/proton-clang -b clang-15 clang
+		
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
@@ -74,15 +74,17 @@ compile() {
     make O=out ARCH="${ARCH}" "${DEFCONFIG}"
     make -j"${PROCS}" O=out \
         ARCH=arm64 \
-        LLVM=1 \
-        LLVM_IAS=1 \
-        AR=llvm-ar \
-        NM=llvm-nm \
-        LD=ld.lld \
-        OBJCOPY=llvm-objcopy \
-        OBJDUMP=llvm-objdump \
-        STRIP=llvm-strip \
-        CC=clang \
+	                      CC="ccache clang" \
+	                      AR=llvm-ar \
+	                      NM=llvm-nm \
+	                      STRIP=llvm-strip \
+	                      OBJCOPY=llvm-objcopy \
+	                      OBJDUMP=llvm-objdump \
+	                      OBJSIZE=llvm-size \
+	                      READELF=llvm-readelf \
+	                      HOSTCC=clang \
+	                      HOSTCXX=clang++ \
+	                      HOSTAR=llvm-ar \
         CROSS_COMPILE=aarch64-linux-gnu- \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi
 
