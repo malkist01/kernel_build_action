@@ -5,27 +5,27 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
 
-clang() {
-    rm -rf clang
-    echo "Cloning clang"
+gcc() {
+    rm -rf gçc
+    echo "Cloning gcc"
     if [ ! -d "clang" ]; then
-		git clone --depth=1 https://gitlab.com/LeCmnGend/proton-clang -b clang-15 clang
+		git clone --depth=1 https://github.com/malkist01/arm.git -b 32 gcc
 		
-        PATH="${PWD}/clang/bin:${PATH}"
+        PATH="${PWD}/gcc/bin:${PATH}"
     fi
     sudo apt install -y ccache
     echo "Done"
 }
 
-IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-IMAGE2=$(pwd)/out/arch/arm64/boot/dtbo.img
+IMAGE=$(pwd)/out/arch/arm/boot/Image.gz-dtb
+IMAGE2=$(pwd)/out/arch/arm/boot/dtbo.img
 DATE=$(date +"%Y%m%d-%H%M")
 START=$(date +"%s")
 KERNEL_DIR=$(pwd)
 CACHE=1
 export CACHE
 export KBUILD_COMPILER_STRING
-ARCH=arm64
+ARCH=arm
 export ARCH
 KBUILD_BUILD_HOST="malkist"
 export KBUILD_BUILD_HOST
@@ -73,19 +73,7 @@ compile() {
 
     make O=out ARCH="${ARCH}" "${DEFCONFIG}"
     make -j"${PROCS}" O=out \
-        ARCH=arm64 \
-	                      CC="ccache clang" \
-	                      AR=llvm-ar \
-	                      NM=llvm-nm \
-	                      STRIP=llvm-strip \
-	                      OBJCOPY=llvm-objcopy \
-	                      OBJDUMP=llvm-objdump \
-	                      OBJSIZE=llvm-size \
-	                      READELF=llvm-readelf \
-	                      HOSTCC=clang \
-	                      HOSTCXX=clang++ \
-	                      HOSTAR=llvm-ar \
-        CROSS_COMPILE=aarch64-linux-gnu- \
+        ARCH=arm \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi
 
     if ! [ -a "$IMAGE" ]; then
