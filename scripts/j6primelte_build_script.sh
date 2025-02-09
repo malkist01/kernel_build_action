@@ -101,7 +101,7 @@ compile() {
         rm -rf out && mkdir -p out
     fi
 
-    make O=out ARCH="${ARCH}" j6primelte_defconfig
+    make O=out ARCH="${ARCH}" teletubies_defconfig
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
         CC="clang" \
