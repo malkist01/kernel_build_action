@@ -43,10 +43,7 @@ export PROCS
 STATUS=STABLE
 export STATUS
 source "${HOME}"/.bashrc && source "${HOME}"/.profile
-if [ $CACHE = 1 ]; then
-    ccache -M 100G
-    export USE_CCACHE=1
-fi
+
 LC_ALL=C
 export LC_ALL
 
@@ -88,7 +85,7 @@ finderr() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=markdown" \
-        -d sticker="CAACAgIAAxkBAAED3JViAplqY4fom_JEexpe31DcwVZ4ogAC1BAAAiHvsEs7bOVKQsl_OiME" \
+        -d sticker="CAADBQADZwADqZrmFoa87YicX2hwAg" \
         -d text="Build throw an error(s)"
     error_sticker
     exit 1
