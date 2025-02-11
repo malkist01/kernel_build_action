@@ -9,11 +9,8 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-    	mkdir clang
-     	cd clang
-        wget https://github.com/ZyCromerZ/Clang/releases/download/21.0.0git-20250205-release/Clang-21.0.0git-20250205.tar.gz
-	tar -xvf *
-        KBUILD_COMPILER_STRING="Another Clang"
+        git clone -q https://github.com/ZyCromerZ/Clang.git --depth=1 -b 20 clang
+        KBUILD_COMPILER_STRING="ZyCromerZ clang 20.0"
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
