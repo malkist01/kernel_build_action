@@ -41,10 +41,7 @@ DEVICE="Xiaomi Redmi Note 4"
 export DEVICE
 CODENAME="mido"
 export CODENAME
-# DEFCONFIG=""
-# DEFCONFIG_COMMON="vendor/sdmsteppe-perf_defconfig"
 DEFCONFIG_DEVICE="teletubies_defconfig"
-# export DEFCONFIG_COMMON
 export DEFCONFIG_DEVICE
 COMMIT_HASH=$(git rev-parse --short HEAD)
 export COMMIT_HASH
