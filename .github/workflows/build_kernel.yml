@@ -12,12 +12,6 @@ on:
       branch:
           description: 'Kernel source branch'
           required: true
-      token:
-          description: 'Telegram bot token'
-          required: false
-      chat_id:
-          description: 'Telegram chat id'
-          required: false
 
 
 env:
