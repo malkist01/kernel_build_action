@@ -4,13 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       device:
-          description: 'samsung'
+          description: 'Devices'
+          default: 'samsung'
           required: true
       repo:
-          description: 'https://github.com/malkist01/nethunter_a7_2016.git'
+          description: 'Kernel Source'
+          default: 'https://github.com/malkist01/nethunter_a7_2016.git'
           required: true
       branch:
-          description: '18.1'
+          description: 'Branch'
+          default: '18.1'
           required: true
       token:
           description: 'Telegram bot token'
