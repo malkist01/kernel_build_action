@@ -53,9 +53,9 @@ jobs:
 
       - name: Compiling
         run: |
-          if [ "${DEVICE}" = "tissot" ]; then
-            wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/tissot_build_script.sh
-            bash tissot_build_script.sh
+          if [ "${DEVICE}" = "samsung" ]; then
+            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/samsung_script.sh
+            bash samsung_script.sh
           elif [ "${DEVICE}" = "tissot-mainline" ]; then
             wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/tissot-mainline_build_script.sh
             bash tissot-mainline_build_script.sh
