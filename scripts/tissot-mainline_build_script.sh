@@ -17,7 +17,7 @@ clang() {
     echo "Done"
 }
 
-IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+IMAGE=$(pwd)/out/arch/arm64/boot/Image
 DATE=$(date +"%Y%m%d-%H%M")
 START=$(date +"%s")
 KERNEL_DIR=$(pwd)
@@ -26,15 +26,15 @@ export CACHE
 export KBUILD_COMPILER_STRING
 ARCH=arm64
 export ARCH
-KBUILD_BUILD_HOST="sirnewbies"
+KBUILD_BUILD_HOST="android"
 export KBUILD_BUILD_HOST
-KBUILD_BUILD_USER="noob-server"
+KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
-DEVICE="Xiaomi Mi A1"
+DEVICE="samsung"
 export DEVICE
-CODENAME="tissot"
+CODENAME="a7xelte"
 export CODENAME
-DEFCONFIG="defconfig xiaomi-tissot.config"
+DEFCONFIG="nethunter_defconfig"
 export DEFCONFIG
 COMMIT_HASH=$(git rev-parse --short HEAD)
 export COMMIT_HASH
@@ -117,7 +117,7 @@ compile() {
     fi
 
     git clone --depth=1 https://github.com/sirnewbies/Anykernel3.git AnyKernel -b tissot
-    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
+    cp out/arch/arm64/boot/Image AnyKernel
 }
 # Zipping
 zipping() {
