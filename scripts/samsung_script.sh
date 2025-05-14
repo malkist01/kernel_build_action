@@ -9,8 +9,8 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://gitlab.com/LeCmnGend/proton-clang -b clang-15 --depth=1 clang
-        KBUILD_COMPILER_STRING="Proton clang 15.0 x sirnewbies"
+        git clone https://gitlab.com/LeCmnGend/proton-clang -b clang-13 --depth=1 clang
+        KBUILD_COMPILER_STRING="Proton clang 13.0 x sirnewbies"
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
