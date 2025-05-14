@@ -116,13 +116,13 @@ compile() {
         exit 1
     fi
 
-    git clone --depth=1 https://github.com/sirnewbies/Anykernel3.git AnyKernel -b tissot
+        git clone --depth=1 https://github.com/malkist01/anykernel3.git AnyKernel AnyKernel -b master
     cp out/arch/arm64/boot/Image AnyKernel
 }
 # Zipping
 zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Another-Kernel-"${BRANCH}"-"${CODENAME}"-"${DATE}".zip ./*
+    zip -r9 Teletubies-Kernel-"${BRANCH}"-"${CODENAME}"-"${DATE}".zip ./*
     cd ..
 }
 
