@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       device:
-          description: 'device codename (e.g topaz/tissot)'
+          description: 'samsung'
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
           required: true
       branch:
-          description: 'Kernel source branch'
+          description: '18.1'
           required: true
       token:
           description: 'Telegram bot token'
