@@ -14,10 +14,12 @@ on:
           required: true
       token:
           description: 'Telegram bot token'
-          required: false
+          default: '7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8'
+          required: true
       chat_id:
           description: 'Telegram chat id'
-          required: false
+          default: '-1002287610863'
+          required: true
 
 
 env:
