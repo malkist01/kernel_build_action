@@ -103,8 +103,8 @@ compile() {
 
     ./update_ksu.sh
 
-    make O=out ARCH="${ARCH}" "${DEFCONFIG}"
-    make -j"${PROCS}" O=out \
+    make -C=out ARCH="${ARCH}" "${DEFCONFIG}"
+    make -j64 -C "${PROCS}" O=out \
         ARCH=$ARCH \
         CC="clang" \
         LLVM=1 \
