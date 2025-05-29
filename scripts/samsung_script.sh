@@ -34,7 +34,7 @@ DEVICE="samsung"
 export DEVICE
 CODENAME="a7xelte"
 export CODENAME
-DEFCONFIG="nethunter_defconfig"
+DEFCONFIG="teletubies_defconfig"
 export DEFCONFIG
 COMMIT_HASH=$(git rev-parse --short HEAD)
 export COMMIT_HASH
