@@ -9,11 +9,11 @@ on:
           required: true
       repo:
           description: 'Kernel Source'
-          default: 'https://github.com/malkist01/nethunter_a7_2016.git'
+          default: 'https://github.com/malkist01/mainline-exynos5.git'
           required: true
       branch:
           description: 'Branch'
-          default: '18.1'
+          default: 'lts-6.12'
           required: true
       token:
           description: 'Telegram bot token'
