@@ -101,8 +101,6 @@ compile() {
         rm -rf out && mkdir -p out
     fi
 
-    ./update_ksu.sh
-
     make -C=out ARCH="${ARCH}" "${DEFCONFIG}"
     make -j64 -C "${PROCS}" O=out \
         ARCH=$ARCH \
