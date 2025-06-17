@@ -17,14 +17,14 @@ clang() {
     echo "Done"
 }
 
-IMAGE=$(pwd)/out/arch/arm64/boot/Image
+IMAGE=$(pwd)/out/arch/arm/boot/zImage-dtb
 DATE=$(date +"%Y%m%d-%H%M")
 START=$(date +"%s")
 KERNEL_DIR=$(pwd)
 CACHE=1
 export CACHE
 export KBUILD_COMPILER_STRING
-ARCH=arm64
+ARCH=arm6
 export ARCH
 KBUILD_BUILD_HOST="android"
 export KBUILD_BUILD_HOST
@@ -34,7 +34,7 @@ DEVICE="samsung"
 export DEVICE
 CODENAME="a7xelte"
 export CODENAME
-DEFCONFIG="teletubies_defconfig"
+DEFCONFIG="j6primelte_defconfig"
 export DEFCONFIG
 COMMIT_HASH=$(git rev-parse --short HEAD)
 export COMMIT_HASH
@@ -106,7 +106,6 @@ compile() {
         ARCH=$ARCH \
         CC="clang" \
         LLVM=1 \
-        CROSS_COMPILE=aarch64-linux-gnu- \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
     if ! [ -a "$IMAGE" ]; then
@@ -115,7 +114,7 @@ compile() {
     fi
 
         git clone --depth=1 https://github.com/malkist01/anykernel3.git AnyKernel AnyKernel -b master
-    cp out/arch/arm64/boot/Image AnyKernel
+    cp out/arch/arm/boot/Image AnyKernel
 }
 # Zipping
 zipping() {
