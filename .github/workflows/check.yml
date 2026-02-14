@@ -24,10 +24,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-      - name: lint
+      - name: lint(mypy)
         if: matrix.lint == 'mypy'
         run: |
           apt update && apt install mypy -y
+          rm .pylintrc
           mypy --explicit-package-bases $(find | grep .py)
 
       - name: lint
@@ -35,4 +36,4 @@ jobs:
         run: |
           apt update && apt install pylint -y
           rm mkdtboimg.py
-          pylint $(find | grep .py)
+          pylint $(find | grep .py )

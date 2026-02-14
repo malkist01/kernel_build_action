@@ -431,7 +431,7 @@ runs:
 
         if [ "${{ inputs.nethunter }}" == "true" ]; then
             echo "::group::Initializing Kali NetHunter"
-            python3 ${{ github.action_path }}/nethunter/nconfig.py "$CONFIG_FILE" -w
+            python3 ${{ github.action_path }}/nethunter/config.py "$CONFIG_FILE" -w
             if [ "${{ inputs.nethunter-patch }}" == "true" ]; then
                 python3 "${{ github.action_path }}/nethunter/patch.py"
             fi
@@ -456,7 +456,7 @@ runs:
 
         if [ "${{ inputs.lxc }}" == "true" ]; then
             echo "::group::Enabling LXC"
-            python3 ${{ github.action_path }}/lxcconfig.py "$CONFIG_FILE" -w
+            python3 ${{ github.action_path }}/nethunter/config.py "$CONFIG_FILE" -w
             if [ "${{ inputs.lxc-patch }}" == "true" ]; then
                 python3 "${{ github.action_path }}/lxc/patch.py"
             fi

@@ -223,8 +223,12 @@ def main() -> None:
     parser.add_argument('-w', action='store_true', help='Write changes to config file')
     args = parser.parse_args()
 
-    config_file = Path(args.config_file)
+    config_file = Path(args.config_file).resolve()
     write_mode = args.w
+
+    if not config_file.is_relative_to(Path.cwd()):
+        print("Error: Config file must be within the current directory")
+        sys.exit(1)
 
     if not config_file.exists():
         print("Provide a config file as argument")

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import os
 import sys
-import glob
 import subprocess
 import argparse
 from pathlib import Path
@@ -31,7 +30,7 @@ def parse_makefile_version(makefile_path):
                     patchlevel = line.split('=', 1)[1].strip()
                 if version is not None and patchlevel is not None:
                     break
-    except Exception as e:
+    except (FileNotFoundError, PermissionError, IOError) as e:
         error(f"Failed to read Makefile: {e}")
 
     if version is None or patchlevel is None:
@@ -61,10 +60,9 @@ def detect_suffix(kdir: Path):
                             if value:
                                 if value.startswith("-"):
                                     return value.replace("-", "_", 1)
-                                else:
-                                    return f"_{value}"
+                                return f"_{value}"
                         break
-        except Exception:
+        except (FileNotFoundError, PermissionError, IOError):
             pass  # ignore .config parse errors
 
     return ""
@@ -80,23 +78,20 @@ def find_patch_dir(patch_dir: Path, base_ver: str, suffix: str):
         if d.is_dir():
             return d
 
-    error(f"No patch directory found for kernel {base_ver}{suffix}\nTried: {candidates}")
+    return None
 
 def apply_patch(kdir: Path, patch_file: Path, dry_run_only: bool):
     info(f"Testing: {patch_file}")
     cmd = ["patch", "-d", str(kdir), "-p1", "--dry-run"]
     try:
         with open(patch_file, 'rb') as f:
-            result = subprocess.run(cmd, stdin=f, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        if result.returncode != 0:
-            raise subprocess.CalledProcessError(result.returncode, cmd)
-    except Exception:
+            subprocess.run(cmd, stdin=f, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+    except (subprocess.CalledProcessError, FileNotFoundError):
         skip_failed = os.environ.get("SKIP_FAILED", "false").lower() == "true"
         if skip_failed:
             warn(f"Skipped failed patch: {patch_file}")
             return
-        else:
-            error(f"Patch dry-run failed: {patch_file}")
+        error(f"Patch dry-run failed: {patch_file}")
 
     if not dry_run_only:
         info(f"Applying: {patch_file}")
@@ -104,7 +99,7 @@ def apply_patch(kdir: Path, patch_file: Path, dry_run_only: bool):
         try:
             with open(patch_file, 'rb') as f:
                 subprocess.run(cmd_apply, stdin=f, check=True)
-        except Exception as e:
+        except (subprocess.CalledProcessError, FileNotFoundError) as e:
             error(f"Failed to apply patch {patch_file}: {e}")
 
 def main():
@@ -132,6 +127,8 @@ def main():
         info(f"Variant suffix: {suffix}")
 
     target_dir = find_patch_dir(patch_dir, base_ver, suffix)
+    if target_dir is None:
+        error(f"No patch directory found for kernel {base_ver}{suffix}")
     info(f"Using patch directory: {target_dir}")
 
     patch_files = []

@@ -1,6 +1,6 @@
 [MASTER]
 # Python version
-py-version = 3.13
+py-version = 3.10
 
 # Disable some style warnings that don't affect functionality
 disable =

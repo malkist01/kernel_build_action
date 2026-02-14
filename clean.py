@@ -75,7 +75,11 @@ def clean_ccache() -> None:
 
 
 def clean_env_vars() -> None:
-    """Clean build-related environment variables."""
+    """Clean build-related environment variables.
+
+    Note: This function prints unset commands to stdout for shell evaluation.
+    Use: eval $(python3 clean.py --env)
+    """
     env_vars = [
         "CMD_PATH", "CMD_CC", "CMD_CLANG_TRIPLE", "CMD_CROSS_COMPILE",
         "CMD_CROSS_COMPILE_ARM32", "USE_CCACHE", "CLANG_PATH", "HOMES",
@@ -88,8 +92,7 @@ def clean_env_vars() -> None:
     ]
     for var in env_vars:
         if var in os.environ:
-            del os.environ[var]
-            print(f"Unset environment variable: {var}")
+            print(f"unset {var}")
 
 
 def clean_temp_files() -> None:
@@ -173,7 +176,9 @@ def main() -> None:
             clean_ccache()
 
         if args.env:
+            print("# Run: eval $(python3 clean.py --env)", file=sys.stderr)
             clean_env_vars()
+            return  # Exit early to avoid extra output when sourcing
 
     # Detect package manager for info
     pkg_mgr = detect_package_manager()

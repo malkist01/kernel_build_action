@@ -38,10 +38,8 @@ def check_dependencies() -> None:
     """Check that required dependencies are installed."""
     missing = []
 
-    if not shutil.which("curl"):
-        missing.append("curl")
-    if not shutil.which("parallel"):
-        missing.append("parallel")
+    if not shutil.which("aria2c"):
+        missing.append("aria2c")
     if not shutil.which("spatch"):
         missing.append("coccinelle")
 
@@ -51,13 +49,13 @@ def check_dependencies() -> None:
 
 
 def download_patch(patch_name: str, temp_dir: Path) -> Path:
-    """Download a single patch file."""
+    """Download a single patch file using aria2c."""
     url = f"{REPO_URL}/{patch_name}"
     output_path = temp_dir / patch_name
 
     try:
         subprocess.run(
-            ["curl", "-sSfL", url, "-o", str(output_path)],
+            ["aria2c", "-d", str(temp_dir), "-o", patch_name, url],
             check=True,
             capture_output=True,
             text=True
