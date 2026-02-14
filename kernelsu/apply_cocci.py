@@ -29,14 +29,8 @@ def extract_files_from_cocci(cocci_file: str) -> list[str]:
     content = Path(cocci_file).read_text(encoding='utf-8')
     # Match pattern: file in "path/to/file.c"
     matches = re.findall(r'file in "([^"]+)"', content)
-    # Remove duplicates while preserving order
-    seen = set()
-    unique_files = []
-    for f in matches:
-        if f not in seen:
-            seen.add(f)
-            unique_files.append(f)
-    return unique_files
+    # Remove duplicates while preserving order (Python 3.7+ dict preserves insertion order)
+    return list(dict.fromkeys(matches))
 
 
 def apply_spatch(cocci_file: str, target_file: str) -> None:
@@ -62,6 +56,7 @@ def apply_spatch(cocci_file: str, target_file: str) -> None:
 
 
 def main() -> None:
+    """Main entry point for applying KernelSU Coccinelle patches."""
     sp_file = "minimal.cocci"
     # sp_file = "classic.cocci"
 

@@ -78,7 +78,6 @@ CONFIG_DVB_RTL2832_SDR
 CONFIG_DVB_SI2168
 CONFIG_DVB_ZD1301_DEMOD
 
-CONFIG_MEDIA_TUNER_R820T
 CONFIG_HIDRAW
 CONFIG_USB_HID
 CONFIG_HID_PID
@@ -304,14 +303,17 @@ CONFIGS_EQ = ""
 
 
 def color_red(text: str) -> str:
+    """Return text wrapped in red ANSI color codes."""
     return f"\033[31m{text}\033[0m"
 
 
 def color_green(text: str) -> str:
+    """Return text wrapped in green ANSI color codes."""
     return f"\033[32m{text}\033[0m"
 
 
 def color_white(text: str) -> str:
+    """Return text wrapped in white ANSI color codes."""
     return f"\033[37m{text}\033[0m"
 
 
@@ -374,6 +376,7 @@ def get_config_value(config_file: Path, config: str) -> str | None:
 
 
 def main() -> None:
+    """Main entry point for checking and configuring NetHunter kernel options."""
     parser = argparse.ArgumentParser(description='Check and configure kernel for Kali NetHunter')
     parser.add_argument('config_file', help='Path to kernel config file')
     parser.add_argument('-w', action='store_true', help='Write changes to config file')

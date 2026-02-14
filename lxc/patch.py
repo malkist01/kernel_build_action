@@ -143,6 +143,7 @@ def apply_netfilter_patch() -> None:
 
 
 def main() -> None:
+    """Main function"""
     cgroup = find_cgroup_file()
 
     patch_files = [

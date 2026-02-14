@@ -92,7 +92,7 @@ def clean_env_vars() -> None:
     ]
     for var in env_vars:
         if var in os.environ:
-            print(f"unset {var}")
+            os.system("unset {var}")
 
 
 def clean_temp_files() -> None:
@@ -124,6 +124,7 @@ def clean_all(kernel_dir: str = "kernel", build_dir: str = "build") -> None:
 
 
 def main() -> None:
+    """Main entry point for the cleanup script."""
     parser = argparse.ArgumentParser(
         description="Clean up build artifacts and temporary files"
     )

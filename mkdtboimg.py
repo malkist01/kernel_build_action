@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
+"""Tool for packing multiple DTB/DTBO files into a single image."""
 
-"""Tool for packing multiple DTB/DTBO files into a single image"""
+from __future__ import print_function
 
 import argparse
 import fnmatch

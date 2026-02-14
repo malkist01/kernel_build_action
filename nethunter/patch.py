@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Apply NetHunter kernel patches in CI mode."""
 import os
 import sys
 import subprocess
@@ -9,16 +10,20 @@ DEFAULT_KDIR = "."
 DEFAULT_PATCH_DIR = "./t/patches"
 
 def info(msg):
+    """Print an info message to stderr."""
     print(f"[INFO] {msg}", file=sys.stderr)
 
 def warn(msg):
+    """Print a warning message to stderr."""
     print(f"[WARN] {msg}", file=sys.stderr)
 
 def error(msg):
+    """Print an error message to stderr and exit."""
     print(f"[ERROR] {msg}", file=sys.stderr)
     sys.exit(1)
 
 def parse_makefile_version(makefile_path):
+    """Parse kernel version from Makefile."""
     version = None
     patchlevel = None
     try:
@@ -39,6 +44,7 @@ def parse_makefile_version(makefile_path):
     return f"{version}.{patchlevel}"
 
 def detect_suffix(kdir: Path):
+    """Detect kernel version suffix from environment or config files."""
     localversion = os.environ.get("LOCALVERSION", "").strip()
     if localversion:
         return localversion
@@ -68,6 +74,7 @@ def detect_suffix(kdir: Path):
     return ""
 
 def find_patch_dir(patch_dir: Path, base_ver: str, suffix: str):
+    """Find the appropriate patch directory for the kernel version."""
     candidates = []
     if suffix:
         candidates.append(base_ver + suffix)
@@ -81,6 +88,7 @@ def find_patch_dir(patch_dir: Path, base_ver: str, suffix: str):
     return None
 
 def apply_patch(kdir: Path, patch_file: Path, dry_run_only: bool):
+    """Apply a single patch file to the kernel source."""
     info(f"Testing: {patch_file}")
     cmd = ["patch", "-d", str(kdir), "-p1", "--dry-run"]
     try:
@@ -103,6 +111,7 @@ def apply_patch(kdir: Path, patch_file: Path, dry_run_only: bool):
             error(f"Failed to apply patch {patch_file}: {e}")
 
 def main():
+    """Main entry point for applying NetHunter kernel patches."""
     parser = argparse.ArgumentParser(description="Apply kernel patches in CI mode")
     parser.add_argument("--kdir", default=DEFAULT_KDIR, help="Kernel source directory (default: .)")
     parser.add_argument("--patch-dir", default=DEFAULT_PATCH_DIR, help="Patch directory (default: ./patches)")

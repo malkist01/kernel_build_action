@@ -456,9 +456,9 @@ runs:
 
         if [ "${{ inputs.lxc }}" == "true" ]; then
             echo "::group::Enabling LXC"
-            python3 ${{ github.action_path }}/nethunter/config.py "$CONFIG_FILE" -w
+            python3 ${{ github.action_path }}/lxc/config.py "$CONFIG_FILE" -w
             if [ "${{ inputs.lxc-patch }}" == "true" ]; then
-                python3 "${{ github.action_path }}/lxc/patch.py"
+                python3 "${{ github.action_path }}/lxc/patch_cocci.py"
             fi
             echo "::endgroup::"
         fi
@@ -656,7 +656,7 @@ runs:
 
         echo "::group:: Cleaning up"
         python3 ${{ github.action_path }}/clean.py
-        python3 ${{ github.action_path }}/clean.py --ccache
+        python3 ${{ github.action_path }}/clean.py --env
         echo "::endgroup::"
 
     - id: uploadi

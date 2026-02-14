@@ -83,7 +83,6 @@ CONFIG_NET_SCHED
 CONFIG_NET_CLS_CGROUP
 CONFIG_CGROUP_NET_PRIO
 CONFIG_FAIR_GROUP_SCHED
-CONFIG_!SCHED_WALT
 CONFIG_RT_GROUP_SCHED
 CONFIG_IP_NF_TARGET_REDIRECT
 CONFIG_IP_VS_NFCT
@@ -141,20 +140,24 @@ CONFIG_CFS_BANDWIDTH
 
 CONFIGS_OFF = """
 CONFIG_ANDROID_PARANOID_NETWORK
+CONFIG_SCHED_WALT
 """
 
 CONFIGS_EQ = ""
 
 
 def color_red(text: str) -> str:
+    """Return text wrapped in red ANSI color codes."""
     return f"\033[31m{text}\033[0m"
 
 
 def color_green(text: str) -> str:
+    """Return text wrapped in green ANSI color codes."""
     return f"\033[32m{text}\033[0m"
 
 
 def color_white(text: str) -> str:
+    """Return text wrapped in white ANSI color codes."""
     return f"\033[37m{text}\033[0m"
 
 
@@ -218,6 +221,7 @@ def get_config_value(config_file: Path, config: str) -> str | None:
 
 
 def main() -> None:
+    """Main entry point for checking and configuring LXC/Docker kernel options."""
     parser = argparse.ArgumentParser(description='Check and configure kernel for LXC/Docker')
     parser.add_argument('config_file', help='Path to kernel config file')
     parser.add_argument('-w', action='store_true', help='Write changes to config file')

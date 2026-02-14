@@ -109,6 +109,7 @@ def apply_patch(patch_file: Path, target_file: Path, kernel_src: Path) -> None:
 
 
 def main() -> None:
+    """Main fcuntion."""
     kernel_src = Path.cwd()
 
     # Check dependencies

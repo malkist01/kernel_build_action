@@ -36,4 +36,7 @@ jobs:
         run: |
           apt update && apt install pylint -y
           rm mkdtboimg.py
-          pylint $(find | grep .py )
+          mv .pylintrc a
+          A=$(find | grep .py )
+          mv a .pylintrc
+          pylint $A

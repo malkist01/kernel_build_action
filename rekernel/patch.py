@@ -122,6 +122,7 @@ def add_makefile_rekernel(makefile: Path) -> None:
 
 
 def main() -> None:
+    """Main entry point for applying Re:Kernel patches."""
     kernel_src = Path.cwd()
 
     with TemporaryDirectory() as temp_dir:
