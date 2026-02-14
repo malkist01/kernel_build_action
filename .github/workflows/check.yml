@@ -14,24 +14,25 @@ jobs:
 
   sh-check:
     runs-on: ubuntu-latest
+    container: debian:sid
     permissions:
       contents: read
     strategy:
       fail-fast: false
       matrix:
-        lint: [mypy, pyline]
+        lint: [mypy, pylint]
 
     steps:
       - uses: actions/checkout@v6
       - name: lint
         if: matrix.lint == 'mypy'
         run: |
-          sudo apt install mypy -y
+          apt update && apt install mypy -y
           mypy --explicit-package-bases $(find | grep .py)
 
       - name: lint
         if: matrix.lint == 'pylint'
         run: |
-          sudo apt install pylint -y
+          apt update && apt install pylint -y
           rm mkdtboimg.py
           pylint $(find | grep .py)
