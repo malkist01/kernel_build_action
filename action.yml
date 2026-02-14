@@ -385,12 +385,7 @@ runs:
                     opam init --disable-sandboxing --yes
                     eval $(opam env)
                     opam install --yes coccinelle
-                    if curl -sSLf "https://github.com/dabao1955/kernel_build_action/raw/main/kernelsu/apply_cocci.sh" -o /tmp/apply_cocci.sh; then
-                        bash /tmp/apply_cocci.sh || echo "Warning: Failed to apply KernelSU patches"
-                        rm -f /tmp/apply_cocci.sh
-                    else
-                        echo "Warning: Failed to download apply_cocci.sh"
-                    fi
+                    python3 ${{ github.action_path }}/kernelsu/apply_cocci.py || echo "Warning: Failed to apply KernelSU patches"
                 fi
             fi
             echo "::endgroup::"
@@ -406,7 +401,7 @@ runs:
 
         if [ "${{ inputs.rekernel }}" == "true" ]; then
             echo "::group::Initializing Re-Kernel"
-            curl -sSLf https://github.com/dabao1955/kernel_build_action/raw/main/rekernel/patch.sh | bash || error "Failed to download or execute Re-Kernel patch script"
+            python3 ${{ github.action_path }}/rekernel/patch.py || error "Failed to download or execute Re-Kernel patch script"
             echo "::endgroup::"
         fi
 
@@ -432,11 +427,9 @@ runs:
 
         if [ "${{ inputs.nethunter }}" == "true" ]; then
             echo "::group::Initializing Kali NetHunter"
-            cp -v "${{ github.action_path }}/nethunter/config.sh" nconfig.sh
-            bash nconfig.sh "$CONFIG_FILE" -w
+            python3 ${{ github.action_path }}/nethunter/nconfig.py "$CONFIG_FILE" -w
             if [ "${{ inputs.nethunter-patch }}" == "true" ]; then
-                cp -v "${{ github.action_path }}/nethunter/patch.py" .
-                bash patch.py
+                python3 "${{ github.action_path }}/nethunter/patch.py"
             fi
             echo "::endgroup::"
         fi
@@ -459,10 +452,9 @@ runs:
 
         if [ "${{ inputs.lxc }}" == "true" ]; then
             echo "::group::Enabling LXC"
-            cp -v "${{ github.action_path }}/lxc/config.sh" config.sh
-            bash config.sh "$CONFIG_FILE" -w
+            python3 ${{ github.action_path }}/lxcconfig.py "$CONFIG_FILE" -w
             if [ "${{ inputs.lxc-patch }}" == "true" ]; then
-                curl -sSL "${{ github.action_path }}/lxc/patch.sh" | bash
+                python3 "${{ github.action_path }}/lxc/patch.py"
             fi
             echo "::endgroup::"
         fi

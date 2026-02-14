@@ -1,18 +1,18 @@
 LXC in Android
 ======
-usage:
+Usage:
 ```bash
-bash config.sh -w <kernel config>
+python3 config.py -w <kernel config>
 ```
 in kernel source directory
 
 ## About patch
 ### Patch 1: Solve the problem of panic in the kernel
 ```bash
-git appply xt_qtagui.patch
+python3 patch.py
 ```
 
-### Patch 2 to solve the problem of running docker (find the location of the cgroup.c file and function)
+### Patch 2 to solve the problem of running docker using Coccinelle
 ```bash
-git apply cgroup.patch
+python3 patch_cocci.py
 ```

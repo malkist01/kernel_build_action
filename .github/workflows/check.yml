@@ -4,10 +4,11 @@ on:
   push:
     branches: main
     paths:
-      - 'lxc/*.sh'
+      - 'lxc/*.py'
       - '.github/workflows/check.yml'
-      - 'kernelsu/*.sh'
-      - 'rekernel/*.sh'
+      - 'kernelsu/*.py'
+      - 'rekernel/*.py'
+      - 'nethunter/*.py'
 
 jobs:
 
@@ -18,27 +19,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lint: [shellcheck, shfmt]
+        lint: [mypy, pyline]
 
     steps:
       - uses: actions/checkout@v6
-      - name: ShellCheck lint
-        if: matrix.lint == 'shellcheck'
-        uses: ludeeus/action-shellcheck@2.0.0
-
-      - name: shfmt lint
-        if: matrix.lint == 'shfmt'
+      - name: lint
+        if: matrix.lint == 'mypy'
         run: |
-            export HOST_ARCH=$(dpkg --print-architecture)
-            case ${HOST_ARCH} in
-                armv7* | armv8l | armhf | arm) aria2c https://github.com/mvdan/sh/releases/download/v3.11.0/shfmt_v3.11.0_linux_arm -o shfmt ;;
-                i*86 | x86) aria2c https://github.com/mvdan/sh/releases/download/v3.11.0/shfmt_v3.14.0_linux_x86 -o shfmt ;;
-                amd64 | x86_64) aria2c https://github.com/mvdan/sh/releases/download/v3.11.0/shfmt_v3.11.0_linux_amd64 -o shfmt ;;
-                aarch64 | arm64) aria2c https://github.com/mvdan/sh/releases/download/v3.11.0/shfmt_v3.11.0_linux_arm64 -o shfmt ;;
+          sudo apt install mypy -y
+          mypy --explicit-package-bases $(find | grep .py)
 
-                *) echo "Unknow cpu architecture for this device !" && exit 1 ;;
-            esac
-            chmod 755 -R ./shfmt
-            ./shfmt -w -i 2 $(find -name *.sh)
-
-
+      - name: lint
+        if: matrix.lint == 'pylint'
+        run: |
+          sudo apt install pylint -y
+          rm mkdtboimg.py
+          pylint $(find | grep .py)

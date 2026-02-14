@@ -14,8 +14,8 @@ This is the **Android Kernel Build Action** - a comprehensive GitHub Action that
 
 ### Key Technologies
 - **GitHub Actions** (YAML-based CI/CD automation)
-- **Bash scripting** (main build logic)
-- **Python 3** (mkdtboimg.py tool for DTB/DTBO image handling)
+- **Python 3** (main build logic and DTB/DTBO image handling)
+- **Bash** (action.yml runtime environment)
 - **Android NDK/AOSP toolchains** (GCC and Clang)
 - **Various kernel modification frameworks** (KernelSU, NetHunter, LXC, Re-Kernel, BBG)
 - **Multi-architecture support** (AMD64, ARM64)
@@ -47,27 +47,26 @@ This is the **Android Kernel Build Action** - a comprehensive GitHub Action that
 │       ├── main.yml        # Main CI test workflow
 │       ├── build.yml       # Kernel build example
 │       ├── lint.yml        # YAML linting
-│       ├── check.yml       # Shell script linting (shellcheck/shfmt)
+│       ├── check.yml       # Python linting (pylint/mypy)
 │       ├── lkm.yml         # ReKernel LKM build test
 │       └── close-pr.yml    # Auto-close PR on build.yml changes
 ├── kernelsu/               # KernelSU integration scripts
-│   ├── apply_cocci.sh      # Coccinelle patch application
+│   ├── apply_cocci.py      # Coccinelle patch application
 │   ├── classic.cocci       # Classic kernel patches
 │   ├── minimal.cocci       # Minimal kernel patches
-│   ├── patch.sh            # Main KernelSU patch script
 │   └── README.md
 ├── lxc/                    # LXC/Docker support
 │   ├── cgroup.cocci        # Cgroup patches
-│   ├── config.sh           # LXC configuration
-│   ├── patch_cocci.sh      # Coccinelle patch application
-│   ├── patch.sh            # LXC patches
+│   ├── config.py           # LXC configuration
+│   ├── patch_cocci.py      # Coccinelle patch application
+│   ├── patch.py            # LXC patches
 │   ├── xt_qtaguid.cocci    # Network tagging patches
 │   └── README.md
 ├── nethunter/              # Kali NetHunter integration
 │   ├── add-rtl88xxau-5.6.4.2-drivers.patch
 │   ├── add-wifi-injection-4.14.patch
 │   ├── add-wifi-injection.patch
-│   ├── config.sh           # NetHunter configuration
+│   ├── config.py           # NetHunter configuration
 │   ├── fix-ath9k-naming-conflict.patch
 │   └── README.md
 └── rekernel/               # Re-Kernel support patches
@@ -79,7 +78,7 @@ This is the **Android Kernel Build Action** - a comprehensive GitHub Action that
     ├── cocci.zip
     ├── Kconfig
     ├── Makefile
-    ├── patch.sh            # ReKernel patch script
+    ├── patch.py            # ReKernel patch script
     ├── README.md
     ├── rekernel.c
     ├── rekernel.h
@@ -125,7 +124,7 @@ The project includes multiple workflows for different purposes:
 - **main.yml**: Main CI test workflow that builds a test kernel on every push/PR
 - **build.yml**: Example workflow demonstrating action usage
 - **lint.yml**: YAML syntax validation using yamllint
-- **check.yml**: Shell script quality checks (shellcheck and shfmt)
+- **check.yml**: Python code quality checks (pylint and mypy)
 - **lkm.yml**: ReKernel LKM build tests on both AMD64 and ARM64
 - **close-pr.yml**: Automatically closes PRs that modify build.yml for security
 
@@ -699,9 +698,8 @@ The action incorporates multiple security measures to ensure safe operation:
 The project follows established coding standards to ensure consistency and maintainability:
 
 - **YAML**: Strictly adheres to `.yamllint` configuration rules with maximum line length of 768 characters and trailing spaces enabled
-- **Bash**: Implements robust error handling using `set -euo pipefail`. Shell scripts should be validated with shellcheck before modifications
-- **Python**: Follows PEP 8 style guidelines as demonstrated in the mkdtboimg.py implementation
-- **Shell scripts**: Organized using functions for better modularity, reusability, and comprehensive error handling
+- **Python**: Follows PEP 8 style guidelines with type hints. Python scripts should be validated with pylint and mypy before modifications
+- **Python scripts**: Organized using functions and classes for better modularity, reusability, and comprehensive error handling
 
 ### Configuration Management
 The project employs systematic configuration management practices:
@@ -725,9 +723,9 @@ Security is integrated throughout the development process:
 The project implements comprehensive code quality measures:
 
 - **YAML Linting**: All YAML files validated with `yamllint` in CI
-- **Shell Script Analysis**: 
-  - **shellcheck**: Static analysis for shell scripts
-  - **shfmt**: Automatic shell script formatting with 2-space indentation
+- **Python Code Analysis**:
+  - **pylint**: Static analysis for Python code
+  - **mypy**: Type checking for Python code
 - **Multi-architecture Testing**: CI runs on both AMD64 and ARM64 platforms
 - **Integration Testing**: Main workflow builds a test kernel to verify functionality
 
@@ -735,8 +733,8 @@ The project implements comprehensive code quality measures:
 ```yaml
 # Example quality checks performed on every PR:
 1. YAML syntax validation (Python yamllint + JS yaml-lint)
-2. Shell script static analysis (shellcheck)
-3. Shell script formatting check (shfmt)
+2. Python static analysis (pylint)
+3. Python type checking (mypy)
 4. Integration test - full kernel build
 5. ReKernel LKM build test (both AMD64 and ARM64)
 ```
@@ -836,4 +834,4 @@ Keep the summary concise, sentence case, and avoid trailing period.
 - Prefer one scope; if multiple areas change, pick the primary one or spilt to a couple of scopes rather than chaining scopes. 
 - Keep subject lines brief (target ≤72 chars), no body unless necessary. If referencing a PR/issue, append `(fix #123)` at the end as seen in history.
 - Before committing, glance at recent `git log --oneline` to stay consistent with current prefixes and capitalization used in this repo.
-- Before committing, run `yamllint` for yml modification or run `shellcheck` for shell script modification.
+- Before committing, run `yamllint` for yml modification or run `pylint` and `mypy` for Python script modification.

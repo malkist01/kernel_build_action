@@ -1,0 +1,27 @@
+[MASTER]
+# Python version
+py-version = 3.13
+
+# Disable some style warnings that don't affect functionality
+disable =
+    C0114,  # missing-module-docstring
+    C0115,  # missing-class-docstring
+    C0116,  # missing-function-docstring
+    C0301,  # line-too-long
+    R0912,  # too-many-branches
+    R0914,  # too-many-locals
+    R0915,  # too-many-statements
+    R0801,  # duplicate-code
+    W1309,  # f-string-without-interpolation
+    W0707   # raise-missing-from
+
+[FORMAT]
+# Allow longer lines
+max-line-length = 120
+
+[DESIGN]
+# Allow more complex functions
+max-args = 10
+max-locals = 20
+max-branches = 20
+max-statements = 100
