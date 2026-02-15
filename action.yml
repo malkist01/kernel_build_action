@@ -537,7 +537,7 @@ runs:
             CROSS_COMPILE="$CMD_CROSS_COMPILE" \
             CROSS_COMPILE_ARM32="$CMD_CROSS_COMPILE_ARM32" \
             CLANG_TRIPLE="$CMD_CLANG_TRIPLE" \
-           "${make_args[@]}"
+           "${make_args[@]}" | tee -a build.log
 
         echo "::endgroup::"
 
@@ -658,6 +658,12 @@ runs:
         python3 ${{ github.action_path }}/clean.py
         eval "$(python3 ${{ github.action_path }}/clean.py --env)"
         echo "::endgroup::"
+
+    - id: analyze
+      if: failure()
+      run: |
+         set +e
+         python3 "${{ github.action_path }}/error.py" "kernel/${{ inputs.kernel-dir }}/out/build.log"
 
     - id: uploadi
       if: ${{ inputs.release == 'false' && inputs.anykernel3 == 'false' }}
