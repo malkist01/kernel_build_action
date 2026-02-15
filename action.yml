@@ -313,7 +313,7 @@ runs:
             echo "::endgroup::"
         fi
 
-        cd "kernel/${{ inputs.kernel-dir }}"
+        pushd "kernel/${{ inputs.kernel-dir }}"
 
         if [ -d "$HOME/gcc-64/bin" ] || [ -d "$HOME/gcc-32/bin" ]; then
             for GCC_DIR in "$HOME/gcc-64" "$HOME/gcc-32"; do
@@ -549,7 +549,7 @@ runs:
             fi
 
             mkdir split
-            cd split
+            pushd split
             # Detect architecture (works on both Debian and Arch)
             if [ -f /bin/dpkg ]; then
                 HOST_ARCH=$(dpkg --print-architecture)
@@ -593,7 +593,7 @@ runs:
             rm -f boot.img
             mkdir -p ../../../build
             find . -name "*.img" -exec mv -v {} ../../../build/boot.img \;
-            cd ..
+            pushd ..
             echo "::endgroup::"
         else
             echo "::group:: Packaging Anykernel3 flasher"
@@ -649,7 +649,7 @@ runs:
             if [ "${{ inputs.release }}" = "false" ]; then
                 cp -r -v AnyKernel3/* ../../build
             else
-                cd AnyKernel3 && zip -r Anykernel3-flasher.zip ./* && mv -v Anykernel3-flasher.zip .. && cd .. && mv -v Anykernel3-flasher.zip ../../build/
+                pushd AnyKernel3 && zip -r Anykernel3-flasher.zip ./* && mv -v Anykernel3-flasher.zip .. && pushd .. && mv -v Anykernel3-flasher.zip ../../build/
             fi
             echo "::endgroup::"
         fi
@@ -661,6 +661,7 @@ runs:
 
     - id: analyze
       if: failure()
+      shell: bash
       run: |
          set +e
          python3 "${{ github.action_path }}/error.py" "kernel/${{ inputs.kernel-dir }}/out/build.log"

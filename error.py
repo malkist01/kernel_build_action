@@ -16,7 +16,7 @@ def print_separator():
     print("-" * 56)
 
 
-def analyze_error_block(error_lines: List[str], error_num: int) -> Tuple[str, str]:
+def analyze_error_block(error_lines: List[str]) -> Tuple[str, str]:
     """
     Analyze error block and return error type and suggestion
     """
@@ -275,7 +275,7 @@ def analyze_errors(log_file: str) -> int:
         for error_line in block:
             print(f"  {error_line}")
 
-        error_type, suggestion = analyze_error_block(block, idx)
+        error_type, suggestion = analyze_error_block(block)
         print(f"Error: {error_type}")
         print(f"Suggestion: {suggestion}")
         print_separator()
