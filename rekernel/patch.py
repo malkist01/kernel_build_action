@@ -121,6 +121,30 @@ def add_makefile_rekernel(makefile: Path) -> None:
         f.write("\nobj-$(CONFIG_REKERNEL) += rekernel/\n")
 
 
+def safe_extract(zip_file: zipfile.ZipFile, extract_path: Path) -> None:
+    """
+    Safely extract zip file contents, preventing ZipSlip attacks.
+    Validates that all extracted files stay within the target directory.
+    """
+    for member in zip_file.namelist():
+        # Resolve the full path and ensure it stays within extract_path
+        member_path = extract_path / member
+        member_path = member_path.resolve()
+        extract_path_resolved = extract_path.resolve()
+
+        # Check for path traversal attempts
+        if not str(member_path).startswith(str(extract_path_resolved) + '/'):
+            raise ValueError(f"ZipSlip attack detected: {member} attempts to escape target directory")
+
+        # Create parent directories if needed
+        member_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Extract the member
+        if not member.endswith('/'):
+            with zip_file.open(member) as src, open(member_path, 'wb') as dst:
+                dst.write(src.read())
+
+
 def main() -> None:
     """Main entry point for applying Re:Kernel patches."""
     kernel_src = Path.cwd()
@@ -141,7 +165,7 @@ def main() -> None:
         print("Extracting source...")
         src_zip = temp_path / "src.zip"
         with zipfile.ZipFile(src_zip, 'r') as z:
-            z.extractall(temp_path)
+            safe_extract(z, temp_path)
 
         # Move rekernel to drivers/
         rekernel_src = temp_path / "rekernel"

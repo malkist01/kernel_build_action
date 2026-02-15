@@ -5,6 +5,30 @@
 - Run the component-specific checks below before handing work off; do not skip failing steps.
 - When unsure which path to take, favor minimal risk changes that can run the workflow successfully.
 
+## Python Code Quality
+
+All Python scripts must pass linting and type checking before submission:
+
+- **pylint**: Static analysis for code errors, style violations, and best practices
+  ```bash
+  pylint <script.py>
+  ```
+- **mypy**: Static type checking to catch type-related errors
+  ```bash
+  mypy <script.py>
+  ```
+- **black** (optional but recommended): Code formatter for consistent style
+  ```bash
+  black <script.py>
+  ```
+  Alternatively, **ruff** can be used as a faster all-in-one linter and formatter:
+  ```bash
+  ruff check <script.py>
+  ruff format <script.py>
+  ```
+
+Configuration is provided in `.pylintrc` for pylint settings. Ensure all Python modifications pass these checks before committing.
+
 ## Git Commit
 
 - Mirror existing history style: 

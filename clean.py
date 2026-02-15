@@ -92,7 +92,7 @@ def clean_env_vars() -> None:
     ]
     for var in env_vars:
         if var in os.environ:
-            os.system("unset {var}")
+            print(f"unset {var}")
 
 
 def clean_temp_files() -> None:
