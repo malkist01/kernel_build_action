@@ -656,7 +656,7 @@ runs:
 
         echo "::group:: Cleaning up"
         python3 ${{ github.action_path }}/clean.py
-        evel "$(python3 ${{ github.action_path }}/clean.py --env)"
+        eval "$(python3 ${{ github.action_path }}/clean.py --env)"
         echo "::endgroup::"
 
     - id: uploadi
